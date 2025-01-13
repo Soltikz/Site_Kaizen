@@ -1,0 +1,516 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Oswald:wght@200..700&display=swap");
+
+body {
+  overflow-x: hidden;
+  font-family: "Oswald", sans-serif;
+  background-color: #f2f2f2;
+}
+
+p {
+  font-family: "Lato", sans-serif;
+}
+
+p {
+  margin: 144px 25px 0 25px;
+}
+
+.carousel_produit {
+  display: flex;
+  flex-direction: column;
+  gap: 29px;
+  padding: 29px;
+}
+
+/* Styles de base */
+.carousel-css {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  max-height: 480px;
+  overflow: hidden;
+}
+
+.carousel-slides {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+  min-width: 100%; /* Une diapositive occupe 100% de l'espace sans marge */
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Masquer les boutons radio */
+input[type="radio"] {
+  display: none;
+}
+
+/* Étiquettes de contrôle (points) */
+.carousel-controls {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+}
+
+.carousel-controls label {
+  width: 10px;
+  height: 10px;
+  background-color: #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.carousel-controls label:hover,
+input[type="radio"]:checked + .carousel-controls label {
+  background-color: #9b4cc4;
+}
+
+/* Carrousel 1 */
+.carousel_all_1 #slide1:checked ~ .carousel-slides {
+  transform: translateX(0%);
+}
+.carousel_all_1 #slide2:checked ~ .carousel-slides {
+  transform: translateX(-100%);
+}
+.carousel_all_1 #slide3:checked ~ .carousel-slides {
+  transform: translateX(-200%);
+}
+
+/*Carrousel 2 */
+.carousel_all_1 #slide4:checked ~ .carousel-slides {
+  transform: translateX(0%);
+}
+.carousel_all_1 #slide5:checked ~ .carousel-slides {
+  transform: translateX(-100%);
+}
+.carousel_all_1 #slide6:checked ~ .carousel-slides {
+  transform: translateX(-200%);
+}
+/*Carrousel 3 */
+.carousel_all_1 #slide7:checked ~ .carousel-slides {
+  transform: translateX(0%);
+}
+.carousel_all_1 #slide8:checked ~ .carousel-slides {
+  transform: translateX(-100%);
+}
+.carousel_all_1 #slide9:checked ~ .carousel-slides {
+  transform: translateX(-200%);
+}
+
+/* Carrousel 4  */
+.carousel_all_2 #slide11:checked ~ .carousel-slides {
+  transform: translateX(0%);
+}
+.carousel_all_2 #slide12:checked ~ .carousel-slides {
+  transform: translateX(-100%);
+}
+.carousel_all_2 #slide13:checked ~ .carousel-slides {
+  transform: translateX(-200%);
+}
+
+/* Carrousel 5  */
+.carousel_all_2 #slide14:checked ~ .carousel-slides {
+  transform: translateX(0%);
+}
+.carousel_all_2 #slide15:checked ~ .carousel-slides {
+  transform: translateX(-100%);
+}
+.carousel_all_2 #slide16:checked ~ .carousel-slides {
+  transform: translateX(-200%);
+}
+
+/* Carrousel 6  */
+.carousel_all_2 #slide17:checked ~ .carousel-slides {
+  transform: translateX(0%);
+}
+.carousel_all_2 #slide18:checked ~ .carousel-slides {
+  transform: translateX(-100%);
+}
+.carousel_all_2 #slide19:checked ~ .carousel-slides {
+  transform: translateX(-200%);
+}
+
+/* Carrousel 7 */
+.carousel_all_3 #slide21:checked ~ .carousel-slides {
+  transform: translateX(0%);
+}
+.carousel_all_3 #slide22:checked ~ .carousel-slides {
+  transform: translateX(-100%);
+}
+.carousel_all_3 #slide23:checked ~ .carousel-slides {
+  transform: translateX(-200%);
+}
+
+/*Carrousel 8 */
+.carousel_all_3 #slide24:checked ~ .carousel-slides {
+  transform: translateX(0%);
+}
+.carousel_all_3 #slide25:checked ~ .carousel-slides {
+  transform: translateX(-100%);
+}
+.carousel_all_3 #slide26:checked ~ .carousel-slides {
+  transform: translateX(-200%);
+}
+
+/*Carrousel 9 */
+.carousel_all_3 #slide27:checked ~ .carousel-slides {
+  transform: translateX(0%);
+}
+.carousel_all_3 #slide28:checked ~ .carousel-slides {
+  transform: translateX(-100%);
+}
+.carousel_all_3 #slide29:checked ~ .carousel-slides {
+  transform: translateX(-200%);
+}
+
+/* Disposition pour plusieurs carrousels */
+.carousel_menu {
+  display: flex;
+  flex-direction: column;
+  gap: 29px;
+  padding: 29px;
+}
+
+.carousel_all_1,
+.carousel_all_2,
+.carousel_all_3 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 29px;
+}
+
+.carousel_1,
+.carousel_2,
+.carousel_3,
+.carousel_4,
+.carousel_5,
+.carousel_6,
+.carousel_7,
+.carousel_8,
+.carousel_9 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Design réactif pour les téléphones */
+@media (max-width: 880px) {
+  .carousel-css {
+    max-height: 80vw;
+  }
+
+  .carousel-slides {
+    height: auto;
+  }
+
+  .slide img {
+    height: auto;
+  }
+
+  .carousel_menu {
+    flex-direction: column;
+  }
+
+  .carousel_all_1,
+  .carousel_all_2,
+  .carousel_all_3 {
+    flex-direction: column;
+    align-items: center;
+    gap: 29px;
+  }
+}
+
+.menu_carousel1,
+.menu_carousel2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu_carousel1 ul,
+.menu_carousel2 ul {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.menu_carousel1 li,
+.menu_carousel2 li {
+  list-style: none;
+}
+
+.menu_carousel1 li a {
+  font-size: 32px;
+  color: #0b044b;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.menu_carousel2 li a {
+  font-size: 32px;
+  color: #0b044b;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.menu_carousel1 li a:hover,
+.menu_carousel2 li a:hover {
+  color: #9b4cc4;
+}
+
+.menu_carousel1 li a:focus {
+  outline: none;
+  color: #0b044b;
+}
+@media (min-width: 992px) {
+  .menu_carousel1 ul,
+  .menu_carousel2 ul {
+    flex-direction: row;
+    gap: 175px;
+  }
+}
+
+.sidebar {
+  width: 250px;
+  background: #fff;
+  border-right: 1px solid #ddd;
+  padding: 20px;
+  height: 100vh;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h3 {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.sidebar label {
+  font-size: 14px;
+  color: #555;
+}
+
+.sidebar input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.sidebar button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 15px;
+  width: 100%;
+}
+
+.sidebar button:hover {
+  background-color: #0056b3;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  /* Centre les cartes horizontalement */
+  align-items: flex-start;
+  /* Aligne les cartes en haut */
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* Assure que le bouton reste en bas */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.card button[type="submit"]:hover {
+  background-color: #0056b3;
+  /* Changement de couleur au survol */
+}
+
+.carousel {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  overflow: hidden;
+  /* Masquer les images qui débordent */
+}
+
+.carousel input[type="radio"] {
+  display: none;
+  /* Masquer les boutons radio */
+}
+
+.carousel-images {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.carousel-image {
+  flex: 0 0 100%;
+}
+
+.carousel input[type="radio"]:nth-of-type(1):checked ~ .carousel-images {
+  transform: translateX(0);
+}
+
+.carousel input[type="radio"]:nth-of-type(2):checked ~ .carousel-images {
+  transform: translateX(-100%);
+}
+
+.carousel input[type="radio"]:nth-of-type(3):checked ~ .carousel-images {
+  transform: translateX(-200%);
+}
+
+.carousel img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.carousel label.prev,
+.carousel label.next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 24px;
+  z-index: 2;
+}
+
+.carousel label.prev {
+  left: 5px;
+}
+
+.carousel label.next {
+  right: 5px;
+}
+
+.card h3 {
+  font-size: 18px;
+  color: #333;
+  margin: 10px 15px;
+}
+
+.card .price {
+  color: #e63946;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 5px 15px;
+}
+
+.card .old-price {
+  color: #999;
+  text-decoration: line-through;
+  font-size: 16px;
+  margin-left: 5px;
+}
+
+.card .rating {
+  color: #f4b400;
+  margin: 5px 15px;
+}
+
+.card .availability {
+  font-size: 14px;
+  color: #555;
+  margin: 10px 15px;
+}
+
+.card .product-options .add_to_cart {
+  text-align: center;
+}
+
+.card button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 15px;
+  align-self: center;
+  text-align: center;
+}
+
+.card button[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 15px;
+  cursor: pointer;
+  text-align: center;
+  justify-content: center;
+  margin-top: 10px auto 0;
+  display: block;
+  transition: background-color 0.3s ease;
+}
+
+.card button:hover {
+  background-color: #0056b3;
+}
+
+.sale {
+  background-color: red;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 3px 8px;
+  border-radius: 3px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card:hover {
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.color-swatch input[type="radio"]:checked + label {
+  border: 2px solid #000;
+  /* Bordure noire pour la couleur sélectionnée */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.color-swatches {
+  display: flex;
+  flex-direction: row;
+}

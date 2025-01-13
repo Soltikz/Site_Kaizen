@@ -1,0 +1,54 @@
+.vision-mode-enabled {
+  background-color: #000;
+  color: #fff;
+}
+
+.vision-mode-enabled a {
+  color: #00ff00;
+}
+
+.vision-mode-enabled .carousel-slides,
+.vision-mode-enabled .card {
+  border-color: #fff;
+}
+
+.vision-mode-enabled .carousel-controls label {
+  background-color: #fff;
+}
+
+.vision-mode-enabled .carousel-controls label:hover {
+  background-color: #9b4cc4;
+}
+
+.vision-mode-enabled .footer-container {
+  background-color: #1b3865;
+  color: #f7f5f2;
+}
+
+.vision-mode-enabled .sidebar {
+  background-color: #333;
+  color: #fff;
+  border-color: #444;
+}
+
+.vision-mode-enabled .card button {
+  background-color: #0056b3;
+  color: #fff;
+}
+
+.vision-mode-enabled .card:hover {
+  box-shadow: 0 6px 8px rgba(255, 255, 255, 0.15);
+}
+
+.vision-mode-enabled .carousel-image {
+  filter: brightness(1.2);
+}
+
+.vision-mode-enabled img {
+  filter: brightness(1.2) contrast(1.5);
+}
+
+.vision-mode-enabled .social-icon svg {
+  filter: brightness(1.2);
+  transition: color 0.3s ease;
+}

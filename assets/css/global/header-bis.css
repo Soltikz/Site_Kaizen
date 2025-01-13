@@ -1,0 +1,31 @@
+.header {
+  color: #0b044b;
+}
+
+.header,
+.header .menu,
+a.dropdown-link {
+  color: #0b044b;
+  stroke: #0b044b;
+}
+
+.menu {
+  color: #0b044b;
+}
+
+.menu li a svg {
+  color: #0b044b !important;
+}
+.header .menu-icon .navicon,
+.header .menu-icon .navicon:before,
+.header .menu-icon .navicon:after {
+  background: #0b044b;
+}
+.menu-svg-accessories {
+  width: 100%;
+  height: 100%;
+}
+.carousel-css,
+.sidebar.container {
+  margin-top: auto;
+}

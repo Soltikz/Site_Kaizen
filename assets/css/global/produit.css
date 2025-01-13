@@ -1,0 +1,278 @@
+body {
+  margin: 0;
+  /* padding: 20px; */
+  /* line-height: 1.6; */
+  color: #0b044b;
+}
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 16px;
+  margin-top: 100px;
+}
+
+.breadcrumb a {
+  color: #888686;
+  text-decoration: none;
+  margin: 0 5px;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb span {
+  color: #888686;
+}
+nav a {
+  pointer-events: auto; /* Assurez-vous que les liens peuvent être cliqués */
+}
+
+nav {
+  position: relative; /* Assurez-vous qu'il n'y a pas d'autres éléments qui se superposent */
+  z-index: 10; /* Ajoutez un z-index plus élevé si nécessaire */
+}
+
+.product-container {
+  display: flex;
+  max-width: 1000px;
+  margin: auto;
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: #fff;
+  margin-bottom: 15px;
+}
+
+.product-images {
+  gap: 10px;
+}
+
+.product-images img {
+  max-width: 100%;
+  width: 48%;
+  border-radius: 5px;
+}
+
+.product-info {
+  flex: 1;
+  margin-left: 20px;
+}
+
+.product-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+p,
+h1,
+h2 {
+  margin: 5px 0 5px 0;
+}
+
+.product-price {
+  color: #e63946;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.product-old-price {
+  text-decoration: line-through;
+  color: #888;
+}
+
+.product-description {
+  margin-top: 15px;
+}
+
+.product-color {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.cta {
+  margin-top: 20px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #0b044b;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.btn:hover {
+  background-color: #1b3865;
+}
+
+.color-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  gap: 10px;
+}
+
+.color-swatch {
+  margin-right: 10px;
+}
+
+.color-swatch input[type="radio"] {
+  display: none;
+}
+
+.color-swatch label {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid #ccc;
+  display: inline-block;
+}
+
+.size-selection {
+  margin-top: 20px;
+}
+
+.size-selection label {
+  font-weight: bold;
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+.styled-select {
+  appearance: none;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  width: 200px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.styled-select:hover {
+  border-color: #1b3865;
+}
+
+.styled-select:focus {
+  outline: none;
+  border-color: #1b3865;
+  box-shadow: 0 0 5px #0b044b;
+}
+
+/* Responsivité */
+@media (max-width: 768px) {
+  .product-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .product-images {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .product-info {
+    margin-left: 0;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .product-title {
+    font-size: 20px;
+  }
+
+  .product-price {
+    font-size: 18px;
+  }
+
+  .styled-select {
+    width: 100%;
+  }
+
+  .quantity-selection {
+    margin: 15px 0;
+  }
+}
+
+.quantity-selection {
+  margin: 15px 0;
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.quantity-btn {
+  background-color: #1b3865;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.quantity-btn:hover {
+  background-color: #1b3865;
+}
+
+.quantity-input {
+  width: 60px;
+  padding: 8px;
+  text-align: center;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+}
+
+.quantity-input:disabled {
+  background-color: #eaeaea;
+}
+
+.quantity-input:focus {
+  outline: none;
+  border-color: #1b3865;
+}
+
+.shipping-info {
+  margin-top: 20px;
+  padding: 10px;
+  font-size: 14px;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  text-align: left;
+}
+
+.shipping-info div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.shipping-info div:last-child {
+  margin-bottom: 0;
+}
+
+.shipping-info span {
+  font-size: 14px;
+  color: #333;
+}
+
+.note {
+  font-size: 12px;
+  color: #888;
+  margin-top: 10px;
+}
