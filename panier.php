@@ -98,34 +98,44 @@ $previousPageName = $previousPage ? basename(parse_url($previousPage, PHP_URL_PA
 $previousPageTitle = $previousPageName && isset($knownTitles[$previousPageName]) ? $knownTitles[$previousPageName] : null;
 
 
-// Initialiser le panier si ce n'est pas encore fait
+if (isset($_POST['language']) && in_array($_POST['language'], ['fr', 'en'])) {
+    $_SESSION['language'] = $_POST['language'];
+    }
+    
+    $language = isset($_SESSION['language']) ? $_SESSION['language'] : 'fr';
+    
+    $translations = [];
+    if ($language == 'en') {
+    $translations = include('translations/en.php');
+    } else {
+    $translations = include('translations/fr.php');
+    }
+
+
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 
-// Gérer l'ajout au panier
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['product_name'], $_POST['product_price'], $_POST['product_color'], $_POST['product_size'], $_POST['quantity'])) {
-        $productBrand = $_POST['product_brand'] ?? 'Marque inconnue'; // Valeur par défaut si la marque n'est pas définie
+        $productBrand = $_POST['product_brand'] ?? 'Marque inconnue'; 
         $productName = $_POST['product_name'];
         $productPrice = (float)$_POST['product_price'];
         $productColor = $_POST['product_color'];
         $productSize = $_POST['product_size'];
         $productQuantity = (int)$_POST['quantity'];
 
-        // Vérifier si le produit existe déjà dans le panier
         $found = false;
         foreach ($_SESSION['cart'] as $index => &$product) {
             if ($product['name'] === $productName && $product['size'] === $productSize && $product['color'] === $productColor) {
                 $product['quantity'] += $productQuantity;
-                $_SESSION['last_added'] = $index; // Mettre à jour l'index du dernier produit ajouté
+                $_SESSION['last_added'] = $index;
                 $found = true;
                 break;
             }
         }
         unset($product);
 
-        // Si le produit n'existe pas dans le panier, l'ajouter
         if (!$found) {
             $_SESSION['cart'][] = [
                 'brand' => $productBrand,
@@ -135,16 +145,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'size' => $productSize,
                 'quantity' => $productQuantity,
             ];
-            $_SESSION['last_added'] = array_key_last($_SESSION['cart']); // Mettre à jour l'index du dernier produit ajouté
+            $_SESSION['last_added'] = array_key_last($_SESSION['cart']);
         }
 
-        // Redirection pour éviter la soumission multiple
         header("Location: panier.php");
         exit;
     }
 }
 
-// Gérer la modification ou suppression d'un produit
 foreach ($_POST as $key => $value) {
     if (preg_match('/^decrease_(\d+)$/', $key, $matches)) {
         $index = (int)$matches[1];
@@ -152,7 +160,7 @@ foreach ($_POST as $key => $value) {
             $_SESSION['cart'][$index]['quantity']--;
         } else {
             unset($_SESSION['cart'][$index]);
-            $_SESSION['cart'] = array_values($_SESSION['cart']); // Réindexation
+            $_SESSION['cart'] = array_values($_SESSION['cart']);
         }
     } elseif (preg_match('/^increase_(\d+)$/', $key, $matches)) {
         $index = (int)$matches[1];
@@ -160,15 +168,13 @@ foreach ($_POST as $key => $value) {
     } elseif (preg_match('/^remove_(\d+)$/', $key, $matches)) {
         $index = (int)$matches[1];
         unset($_SESSION['cart'][$index]);
-        $_SESSION['cart'] = array_values($_SESSION['cart']); // Réindexation
-        // Si le dernier produit ajouté est supprimé, réinitialiser last_added
+        $_SESSION['cart'] = array_values($_SESSION['cart']); 
         if (isset($_SESSION['last_added']) && $_SESSION['last_added'] == $index) {
             unset($_SESSION['last_added']);
         }
     }
 }
 
-// Réinitialiser last_added si le panier est vide ou l'index n'est plus valide
 if (empty($_SESSION['cart']) || !isset($_SESSION['cart'][$_SESSION['last_added']])) {
     unset($_SESSION['last_added']);
 }
@@ -187,6 +193,7 @@ $totalPrice = 0;
     <link rel="stylesheet" href="./assets/css/main.css">
     <link rel="stylesheet" href="./assets/css/panier.css">
     <link rel="stylesheet" href="./assets/css/global/header-bis.css">
+    <link rel="stylesheet" href="./assets/css/global/vision-mode.css">
 
 </head>
 

@@ -56,12 +56,16 @@ if (isset($_POST['language']) && in_array($_POST['language'], ['fr', 'en'])) {
 <html lang="fr">
 
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Produits</title>
-<link rel="stylesheet" href="./assets/css/main.css" />
-<link rel="stylesheet" href="./assets/css/global/header-bis.css" />
-<link rel="stylesheet" href="./assets/css/global/vitrine.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produits</title>
+    <link rel="stylesheet" href="./assets/css/main.css" />
+    <link rel="stylesheet" href="./assets/css/global/header-bis.css" />
+    <link rel="stylesheet" href="./assets/css/global/vitrine.css">
+    <link rel="stylesheet" href="./assets/css/global/vision-mode.css">
+
+</head>
 
 <body>
     <header class="header">

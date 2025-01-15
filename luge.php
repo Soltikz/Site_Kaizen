@@ -55,12 +55,16 @@ if (!empty($_GET)) {
 <html lang="fr">
 
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lugue</title>
-<link rel="stylesheet" href="./assets/css/main.css" />
-<link rel="stylesheet" href="./assets/css/global/header-bis.css" />
-<link rel="stylesheet" href="./assets/css/global/vitrine.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produits</title>
+    <link rel="stylesheet" href="./assets/css/main.css" />
+    <link rel="stylesheet" href="./assets/css/global/header-bis.css" />
+    <link rel="stylesheet" href="./assets/css/global/vitrine.css">
+    <link rel="stylesheet" href="./assets/css/global/vision-mode.css">
+
+</head>
 
 <body class="<?php echo $vision_mode_enabled ? 'vision-mode-enabled' : ''; ?>">
     <header class="header">

@@ -122,6 +122,7 @@ $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'index.h
     <link rel="stylesheet" href="./assets/css/main.css">
     <link rel="stylesheet" href="./assets/css/global/header-bis.css">
     <link rel="stylesheet" href="./assets/css/global/produit.css">
+    <link rel="stylesheet" href="./assets/css/global/vision-mode.css">
 </head>
 
 <body class="<?php echo $vision_mode_enabled ? 'vision-mode-enabled' : ''; ?>">
