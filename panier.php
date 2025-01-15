@@ -25,17 +25,72 @@ $couleurs = [
     "#B22222" => "Rouge brique",
     "#FFE4C4" => "Bisque (Beige rosé)",
     "#00008B" => "Bleu marine",
-    "#696969" => "Gris foncé"
+    "#696969" => "Gris foncé",
+    "#87CEEB" => "Bleu ciel",
+    "#2E8B57" => "Vert séquoia",
+    "#FF6347" => "Tomate",
+    "#DA70D6" => "Orchidée",
+    "#EEE8AA" => "Jaune pâle",
+    "#98FB98" => "Vert pâle",
+    "#4682B4" => "Bleu acier",
+    "#FF4500" => "Orange rouge",
+    "#8A2BE2" => "Bleu violet",
+    "#7FFF00" => "Vert chartreuse",
+    "#D2691E" => "Chocolat",
+    "#6495ED" => "Bleu cornflower",
+    "#DC143C" => "Cramoisi",
+    "#00CED1" => "Turquoise foncé",
+    "#9400D3" => "Violet foncé",
+    "#556B2F" => "Vert olive foncé",
+    "#FF8C00" => "Orange foncé",
+    "#9932CC" => "Violet foncé",
+    "#E9967A" => "Saumon foncé",
+    "#8FBC8F" => "Vert océan",
+    "#483D8B" => "Bleu ardoise foncé",
+    "#2F4F4F" => "Gris ardoise foncé",
+    "#FF1493" => "Rose profond",
+    "#00BFFF" => "Bleu ciel profond",
+    "#1E90FF" => "Bleu dodger",
+    "#BDB76B" => "Kaki foncé",
+    "#CD5C5C" => "Rouge indien",
+    "#7B68EE" => "Bleu ardoise moyen",
+    "#FA8072" => "Saumon",
+    "#FF69B4" => "Rose vif",
+    "#FFE4E1" => "Rose brume",
+    "#40E0D0" => "Turquoise",
+    "#C71585" => "Fuchsia foncé",
+    "#191970" => "Bleu minuit"
 ];
 $knownTitles = [
-    "index.html" => "Accueil",
+    "index.php" => "Accueil",
     "vetement_all.php"=> "Vêtement",
     "vetement_hommme.php"=> "Homme",
     "vetement_femme.php"=>"Femme",
     "vetement_enfant"=>"Enfant",
+    "sous-vetement_all.php"=> "Vêtement",
+    "sous-vetement_hommme.php"=> "Sous-Vêtement Homme",
+    "sous-vetement_femme.php"=>"Sous-Vêtement Femme",
+    "sous-vetement_enfant"=>"Sous-Vêtement Enfant",
     "produit.php" => "Produits",
     "contact.php" => "Contact",
-    "panier.php" => "Votre Panier",
+    "panier.php" => "Panier",
+    "homme.php"=>"Homme",
+    "femme.php"=>"Femme",
+    "enfant"=>"Enfant",
+    "gants-homme.php"=>"Gants Homme",
+    "gants-femme.php"=>"Gants Femme",
+    "gants-enfnat.php"=>"Gants Enfant",
+    "chaussure-hommme.php"=>"Chaussures Homme",
+    "chaussure-femme.php"=>"Chaussures Femme",
+    "chaussure-enfant.php"=>"Chaussures Enfant",
+    "lunette-homme"=>"Lunettes Homme",
+    "lunette-femme"=>"Lunettes Femme",
+    "lunette-enfant"=>"Lunettes Enfant",
+    "accessoire.php"=>"Accessoires",
+    "ski.php"=>'Ski',
+    "snow.php"=>"Snowboard",
+    "luge.php"=>"Luge",
+    "raquette.php"=>"Raquette"
 ];
 
 $previousPage = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;
@@ -135,25 +190,31 @@ $totalPrice = 0;
 
 </head>
 
-<body>
+<body class="<?php echo $vision_mode_enabled ? 'vision-mode-enabled' : ''; ?>">
     <header class="header">
-        <a href="index.html" class="logo"><img src="./assets/img/logo/logo.png" alt="Logo Kaizen" />Kaizen</a>
+        <a href="index.html" class="logo">
+            <img src="./assets/img/logo/logo.png" alt="Logo Kaizen" />
+            Kaizen
+        </a>
     </header>
+
     <nav class="breadcrumb">
-        <a href="index.html">Accueil</a>
+        <a href="index.php"><?= $translations['home'] ?? 'Accueil'; ?></a>
         <span>&gt;</span>
         <?php if ($previousPage): ?>
         <a href="<?= htmlspecialchars($previousPage) ?>"
             class="return-btn"><?= htmlspecialchars($previousPageTitle) ?></a>
         <?php endif; ?>
         <span>&gt;</span>
-        <a href="panier.php">Panier</a>
+        <a href="panier.php"><?= $translations['cart'] ?? 'Panier'; ?></a>
     </nav>
+
     <div class="progress">
-        <div class="active">1. Panier</div>
-        <div>2. Livraison</div>
-        <div>3. Paiement</div>
+        <div class="active"><?= $translations['step_cart'] ?? '1. Panier'; ?></div>
+        <div><?= $translations['step_delivery'] ?? '2. Livraison'; ?></div>
+        <div><?= $translations['step_payment'] ?? '3. Paiement'; ?></div>
     </div>
+
     <div class="container">
         <div class="cart">
             <div class="cart-content">
@@ -166,10 +227,14 @@ $totalPrice = 0;
                     ?>
                     <div class="cart-item">
                         <div class="item-details">
-                            <p><strong>Produit :</strong> <?= htmlspecialchars($product['name']) ?></p>
-                            <p><strong>Taille :</strong> <?= htmlspecialchars($product['size']) ?></p>
-                            <p><strong>Couleur :</strong>
-                                <?= isset($couleurs[$product['color']]) ? $couleurs[$product['color']] : "Couleur inconnue" ?>
+                            <p><strong><?= $translations['product'] ?? 'Produit'; ?> :</strong>
+                                <?= htmlspecialchars($product['name']) ?></p>
+                            <p><strong><?= $translations['size'] ?? 'Taille'; ?> :</strong>
+                                <?= htmlspecialchars($product['size']) ?></p>
+                            <p><strong><?= $translations['color'] ?? 'Couleur'; ?> :</strong>
+                                <?= isset($couleurs[$product['color']])
+                                    ? $couleurs[$product['color']]
+                                    : ($translations['unknown_color'] ?? 'Couleur inconnue'); ?>
                             </p>
                         </div>
                         <div class="item-actions">
@@ -179,7 +244,7 @@ $totalPrice = 0;
                                 <button type="submit" name="increase_<?= $index ?>">+</button>
                                 <button type="submit" name="remove_<?= $index ?>"
                                     style="background-color: red; color: white;">
-                                    Supprimer
+                                    <?= $translations['remove'] ?? 'Supprimer'; ?>
                                 </button>
                             </form>
                             <span class="item-price">
@@ -190,15 +255,18 @@ $totalPrice = 0;
                     <?php
                         }
                     } else {
-                        echo "<p>Votre panier est vide.</p>";
+                        echo "<p>" . ($translations['empty_cart'] ?? 'Votre panier est vide.') . "</p>";
                     }
                     ?>
                 </div>
                 <div class="summary">
-                    <p><strong>Nombre de produits :</strong> <?= count($_SESSION['cart']) ?></p>
-                    <p><strong>Total :</strong> <?= number_format($totalPrice, 2) ?> €</p>
-                    <p><strong>Livraison :</strong> Gratuit</p>
-                    <button>Poursuivre la commande</button>
+                    <p><strong><?= $translations['number_of_products'] ?? 'Nombre de produits'; ?> :</strong>
+                        <?= count($_SESSION['cart']) ?></p>
+                    <p><strong><?= $translations['total'] ?? 'Total'; ?> :</strong>
+                        <?= number_format($totalPrice, 2) ?> €</p>
+                    <p><strong><?= $translations['shipping'] ?? 'Livraison'; ?> :</strong>
+                        <?= $translations['free_shipping'] ?? 'Gratuit'; ?></p>
+                    <button><?= $translations['continue_order'] ?? 'Poursuivre la commande'; ?></button>
                 </div>
             </div>
         </div>
@@ -206,81 +274,99 @@ $totalPrice = 0;
     <footer>
         <div class="footer-settings">
             <div class="language-selector">
-                <label for="language">Langue :</label>
-                <select id="language" name="language">
-                    <option value="fr">Français</option>
-                    <option value="en">English</option>
-                </select>
+                <label for="language"><?= $translations['footer_language'] ?? 'Langue' ?></label>
+                <form method="POST">
+                    <select id="language" name="language" onchange="this.form.submit()">
+                        <option value="fr" <?= $language == 'fr' ? 'selected' : '' ?>>
+                            <?= $translations['language_french'] ?? 'Français' ?></option>
+                        <option value="en" <?= $language == 'en' ? 'selected' : '' ?>>
+                            <?= $translations['language_english'] ?? 'English' ?></option>
+                    </select>
+                </form>
             </div>
             <div class="vision-mode-toggle">
-                <label for="vision-mode">Mode malvoyant :</label>
-                <button id="vision-mode">Activer</button>
+                <label for="vision-mode"><?= $translations['vision_mode_label'] ?? 'Mode malvoyant :' ?></label>
+                <!-- Lien pour activer/désactiver le mode malvoyant -->
+                <a href="?vision_mode=true" class="vision-mode-toggle-link">
+                    <?= $translations['vision_mode_activate'] ?? 'Activer' ?>
+                </a>
+                <a href="?vision_mode=false" class="vision-mode-toggle-link">
+                    <?= $translations['vision_mode_deactivate'] ?? 'Désactiver' ?>
+                </a>
             </div>
         </div>
         <div class="footer-container">
             <div class="footer-section">
                 <input type="checkbox" id="discover" class="toggle" />
-                <label for="discover">Notre entreprise <span>˅</span></label>
+                <label for="discover"><?= $translations['our_company'] ?? 'Notre entreprise' ?> <span>˅</span></label>
                 <ul class="content">
-                    <h2 class="section-title">Notre entreprise</h2>
-                    <li><a href="temporaire.html">Qui sommes-nous ?</a></li>
-                    <li><a href="temporaire.html">La vie de nos produits</a></li>
-                    <li><a href="temporaire.html">Engagement durable</a></li>
+                    <h2 class="section-title"><?= $translations['our_company'] ?? 'Notre entreprise' ?></h2>
+                    <li><a href="temporaire.html"><?= $translations['who_we_are'] ?? 'Qui sommes-nous ?' ?></a></li>
+                    <li><a href="temporaire.html"><?= $translations['product_life'] ?? 'La vie de nos produits' ?></a>
+                    </li>
+                    <li><a
+                            href="temporaire.html"><?= $translations['sustainable_commitment'] ?? 'Engagement durable' ?></a>
+                    </li>
                 </ul>
             </div>
             <div class="footer-section">
                 <input type="checkbox" id="help" class="toggle" />
-                <label for="help">Besoin d'aide <span>˅</span></label>
+                <label for="help"><?= $translations['need_help'] ?? 'Besoin d\'aide' ?> <span>˅</span></label>
                 <ul class="content">
-                    <h2 class="section-title">Besoin d'aide</h2>
-                    <li><a href="temporaire.html">Mode de livraison</a></li>
-                    <li><a href="temporaire.html">Moyens de paiement</a></li>
-                    <li><a href="temporaire.html">Comment choisir votre produit</a></li>
+                    <h2 class="section-title"><?= $translations['need_help'] ?? 'Besoin d\'aide' ?></h2>
+                    <li><a href="temporaire.html"><?= $translations['delivery_mode'] ?? 'Mode de livraison' ?></a></li>
+                    <li><a href="temporaire.html"><?= $translations['payment_methods'] ?? 'Moyens de paiement' ?></a>
+                    </li>
+                    <li><a
+                            href="temporaire.html"><?= $translations['product_selection'] ?? 'Comment choisir votre produit' ?></a>
+                    </li>
                 </ul>
             </div>
             <div class="footer-section">
                 <input type="checkbox" id="sport" class="toggle" />
-                <label for="sport">Faire du sport <span>˅</span></label>
+                <label for="sport"><?= $translations['sport'] ?? 'Faire du sport' ?> <span>˅</span></label>
                 <ul class="content">
-                    <h2 class="section-title">Faire du sport</h2>
-                    <li><a href="tutoriel.html">Tutoriels</a></li>
+                    <h2 class="section-title"><?= $translations['sport'] ?? 'Faire du sport' ?></h2>
+                    <li><a href="tutoriel.html"><?= $translations['menu_tutorial'] ?? 'Tutoriels' ?></a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <input type="checkbox" id="follow" class="toggle" />
-                <label for="follow">Suivez-nous <span>˅</span></label>
+                <label for="follow"><?= $translations['follow_us'] ?? 'Suivez-nous' ?> <span>˅</span></label>
                 <div class="content social-media">
                     <a href="temporaire.html" class="social-icon facebook">
                         <svg width="21" height="21" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M12 2.03998C6.5 2.03998 2 6.52998 2 12.06C2 17.06 5.66 21.21 10.44 21.96V14.96H7.9V12.06H10.44V9.84998C10.44 7.33998 11.93 5.95998 14.22 5.95998C15.31 5.95998 16.45 6.14998 16.45 6.14998V8.61998H15.19C13.95 8.61998 13.56 9.38998 13.56 10.18V12.06H16.34L15.89 14.96H13.56V21.96C15.9164 21.5878 18.0622 20.3855 19.6099 18.57C21.1576 16.7546 22.0054 14.4456 22 12.06C22 6.52998 17.5 2.03998 12 2.03998Z"
-                                fill="currentColor" />
+                            <path d="..." fill="currentColor" />
                         </svg>
-                        Facebook
+                        <?= $translations['facebook'] ?? 'Facebook' ?>
                     </a>
                     <a href="temporaire.html" class="social-icon instagram">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" width="21" height="21">
-                            <path
-                                d="M7.75 2H16.25C19.35 2 22 4.65 22 7.75V16.25C22 19.35 19.35 22 16.25 22H7.75C4.65 22 2 19.35 2 16.25V7.75C2 4.65 4.65 2 7.75 2ZM7.75 4C5.68 4 4 5.68 4 7.75V16.25C4 18.32 5.68 20 7.75 20H16.25C18.32 20 20 18.32 20 16.25V7.75C20 5.68 18.32 4 16.25 4H7.75ZM12 7C14.76 7 17 9.24 17 12C17 14.76 14.76 17 12 17C9.24 17 7 14.76 7 12C7 9.24 9.24 7 12 7ZM12 9C10.34 9 9 10.34 9 12C9 13.66 10.34 15 12 15C13.66 15 15 13.66 15 12C15 10.34 13.66 9 12 9ZM17.5 6C18.33 6 19 6.67 19 7.5C19 8.33 18.33 9 17.5 9C16.67 9 16 8.33 16 7.5C16 6.67 16.67 6 17.5 6Z"
-                                fill="currentColor" />
+                            <path d="..." fill="currentColor" />
                         </svg>
-                        Instagram
+                        <?= $translations['instagram'] ?? 'Instagram' ?>
                     </a>
                 </div>
             </div>
         </div>
         <div class="footer-bottom-container">
             <div class="footer-bottom">
-                <h3>&copy; 2024 Kaizen - Tous droits réservés.</h3>
+                <h3>&copy; 2024 Kaizen - <?= $translations['all_rights_reserved'] ?? 'Tous droits réservés.' ?></h3>
             </div>
             <div class="footer-bottom-link">
                 <ul>
-                    <li><a href="temporaire.html">Transparence des produit</a></li>
-                    <li><a href="temporaire.html">Condition Générales</a></li>
-                    <li><a href="temporaire.html">Mention légales</a></li>
-                    <li><a href="temporaire.html">Données personnelles</a></li>
-                    <li><a href="temporaire.html">Gestion des cookies</a></li>
-                    <li><a href="contact.html">Contact</a></li>
+                    <li><a
+                            href="temporaire.html"><?= $translations['product_transparency'] ?? 'Transparence des produits' ?></a>
+                    </li>
+                    <li><a href="temporaire.html"><?= $translations['terms_conditions'] ?? 'Conditions Générales' ?></a>
+                    </li>
+                    <li><a href="temporaire.html"><?= $translations['legal_mentions'] ?? 'Mentions légales' ?></a></li>
+                    <li><a href="temporaire.html"><?= $translations['personal_data'] ?? 'Données personnelles' ?></a>
+                    </li>
+                    <li><a
+                            href="temporaire.html"><?= $translations['cookies_management'] ?? 'Gestion des cookies' ?></a>
+                    </li>
+                    <li><a href="contact.html"><?= $translations['contact'] ?? 'Contact' ?></a></li>
                 </ul>
             </div>
         </div>

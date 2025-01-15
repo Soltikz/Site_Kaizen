@@ -3,6 +3,10 @@
   color: #fff;
 }
 
+.vision-mode-enabled .menu_carousel1 li a,
+.vision-mode-enabled .menu_carousel li a {
+  color: #00ff00 !important;
+}
 .vision-mode-enabled a {
   color: #00ff00;
 }

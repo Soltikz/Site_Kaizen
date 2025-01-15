@@ -216,20 +216,6 @@ Ces lunettes MH 900 vous apporterons une précision et une qualité de vision op
                                                 "./assets/img/vetement/Hommes/Lunettes/1/lunettes-de-soleil-mh900-photochromiques-cat-2-4-full-lens-grey-volcano.avif",
                                             ]
                                             ],
-            // [
-            //     "id"=> 12 ,
-            //     "brand"=> "Scott",
-            //     "name"=>"SCOTT Ensemble Casque De Ski/Lunettes",
-            //     "price"=> 115,
-            //     "old_price"=>"",
-            //     "category"=>["vetement_all","homme","femme","enfant","lunette"],
-            //     "colors"=>["#C76ED0"],
-            //     "sizes"=>["S","M"],
-            //     "images"=>[
-            //         "./assets/img/vetement/Hommes/Lunettes/4/d2-lunettes-de-ski-unisexes-blackll-dark-smoke.avif",
-            //     ]
-            //     ],
-
             [
                 "id"=> 13,
                 "brand"=> "Dragon",

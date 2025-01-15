@@ -1,21 +1,16 @@
 <?php
 session_start();
 
-// Vérifie si la langue a été sélectionnée et valide la valeur
 if (isset($_POST['language']) && in_array($_POST['language'], ['fr', 'en'])) {
 $_SESSION['language'] = $_POST['language'];
 }
 
-// Définit la langue par défaut
 $language = isset($_SESSION['language']) ? $_SESSION['language'] : 'fr';
 
-// Charge les traductions appropriées
 $translations = [];
 if ($language == 'en') {
-// Charger le fichier de traduction anglais
 $translations = include('translations/en.php');
 } else {
-// Charger le fichier de traduction français
 $translations = include('translations/fr.php');
 }
 $vision_mode_enabled = isset($_GET['vision_mode']) && $_GET['vision_mode'] === 'true';
@@ -30,7 +25,7 @@ $vision_mode_enabled = isset($_GET['vision_mode']) && $_GET['vision_mode'] === '
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./assets/css/main.css" />
-    <!-- <link rel="stylesheet" href="./assets/css/global/vision-mode.css"> -->
+    <link rel="stylesheet" href="./assets/css/global/vision-mode.css">
     <link rel="shortcut icon" href="/assets/img/logo/logo.png" type="image/x-icon" />
     <title><?= $translations['page_title']??"Kaizen - Page d'accueil"?></title>
 </head>

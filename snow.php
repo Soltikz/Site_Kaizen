@@ -1,43 +1,48 @@
 <?php
-// Inclure les articles
 include_once 'articles.php';
 
-// Appliquer un filtre pour afficher uniquement les articles de la catégorie "vetement"
+$vision_mode_enabled = isset($_GET['vision_mode']) && $_GET['vision_mode'] === 'true';
+
 $filteredArticles = array_filter($articles, function ($article) {
     return isset($article['category']) && is_array($article['category']) && in_array('snow', $article['category']);
 });
 
-// Appliquer des filtres supplémentaires si des paramètres GET sont fournis
+if (isset($_POST['language']) && in_array($_POST['language'], ['fr', 'en'])) {
+    $_SESSION['language'] = $_POST['language'];
+    }
+    
+    $language = isset($_SESSION['language']) ? $_SESSION['language'] : 'fr';
+    
+    $translations = [];
+    if ($language == 'en') {
+    $translations = include('translations/en.php');
+    } else {
+    $translations = include('translations/fr.php');
+    }
 if (!empty($_GET)) {
-    // Filtrage par catégorie
     if (!empty($_GET['category'])) {
         $selectedCategories = is_array($_GET['category']) ? $_GET['category'] : [$_GET['category']];
         $filteredArticles = array_filter($filteredArticles, function ($article) use ($selectedCategories) {
-            // Vérifier si l'article a une catégorie qui correspond à une catégorie sélectionnée
             return isset($article['category']) && is_array($article['category']) &&
                 !empty(array_intersect($article['category'], $selectedCategories));
         });
     }
-
-    // Filtrage par couleur
+    
     if (!empty($_GET['color'])) {
-        $selectedColors = $_GET['color']; // Les couleurs sélectionnées par l'utilisateur
+        $selectedColors = $_GET['color'];
         $filteredArticles = array_filter($filteredArticles, function($article) use ($selectedColors) {
-            // Vérifier si l'article contient au moins une couleur correspondant aux couleurs sélectionnées
             return !empty(array_intersect($selectedColors, $article['colors']));
         });
     }
 
     // Filtrage par marque
     if (!empty($_GET['brand'])) {
-        $selectedBrands = $_GET['brand']; // Les marques sélectionnées par l'utilisateur
+        $selectedBrands = $_GET['brand'];
         $filteredArticles = array_filter($filteredArticles, function($article) use ($selectedBrands) {
-            // Vérifier si l'article correspond à une marque sélectionnée
             return isset($article['brand']) && in_array($article['brand'], $selectedBrands);
         });
     }
 
-    // Filtrage par prix maximum
     if (!empty($_GET['max_price']) && is_numeric($_GET['max_price'])) {
         $filteredArticles = array_filter($filteredArticles, function ($article) {
             return isset($article['price']) && $article['price'] <= $_GET['max_price'];
@@ -52,14 +57,14 @@ if (!empty($_GET)) {
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Produits</title>
+<title>Snowboard</title>
 <link rel="stylesheet" href="./assets/css/main.css" />
 <link rel="stylesheet" href="./assets/css/global/header-bis.css" />
 <link rel="stylesheet" href="./assets/css/global/vitrine.css">
 
-<body>
+<body class="<?php echo $vision_mode_enabled ? 'vision-mode-enabled' : ''; ?>">
     <header class="header">
-        <a href="index.html" class="logo"><img src="./assets/img/logo/logo.png" alt="Logo Kaizen" />Kaizen</a>
+        <a href="index.php" class="logo"><img src="./assets/img/logo/logo.png" alt="Logo Kaizen" />Kaizen</a>
         <input class="menu-btn" type="checkbox" id="menu-btn" />
         <label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
         <ul class="menu">
@@ -68,72 +73,78 @@ if (!empty($_GET)) {
                     <svg width="32px" height="32px" fill="currentColor" viewBox="0 0 512.02 512.02"
                         xmlns="http://www.w3.org/2000/svg">
                         <path d="M70.784,270.575c1.664,1.664,3.849,2.5,6.033,2.5s4.369-0.836,6.033-2.5c3.336-3.337,3.336-8.73,0-12.066l-51.2-51.2
-              c-8.141-8.141-14.566-14.566-14.566-28.1s6.426-19.959,14.566-28.1l128-128c4.864-4.864,16.051-6.016,19.567-6.033h179.2v153.609
-              H196.326h-0.085H42.735c-4.719,0-8.533,3.823-8.533,8.533c0,4.71,3.814,8.533,8.533,8.533h150.025l48.691,48.691
-              c1.664,1.664,3.849,2.5,6.033,2.5c2.185,0,4.369-0.836,6.033-2.5c3.337-3.337,3.337-8.73,0-12.066l-36.625-36.625h201.31
-              c4.719,0,8.533-3.823,8.533-8.533c0-4.71-3.814-8.533-8.533-8.533h-42.718v-17.075h42.667c4.719,0,8.533-3.823,8.533-8.533
-              c0-4.71-3.814-8.533-8.533-8.533h-42.667v-17.067h42.667c4.719,0,8.533-3.823,8.533-8.533s-3.814-8.533-8.533-8.533h-42.667
-              V85.342h42.667c4.719,0,8.533-3.823,8.533-8.533s-3.814-8.533-8.533-8.533h-42.667V51.209h42.667
-              c4.719,0,8.533-3.823,8.533-8.533c0-4.71-3.814-8.533-8.533-8.533h-42.667V17.075h42.667c4.719,0,8.533-3.823,8.533-8.533
-              s-3.814-8.533-8.533-8.533H179.217c-2.108,0-20.907,0.307-31.633,11.034l-128,128c-8.713,8.721-19.567,19.567-19.567,40.166
-              s10.854,31.445,19.567,40.166L70.784,270.575z" />
+      c-8.141-8.141-14.566-14.566-14.566-28.1s6.426-19.959,14.566-28.1l128-128c4.864-4.864,16.051-6.016,19.567-6.033h179.2v153.609
+      H196.326h-0.085H42.735c-4.719,0-8.533,3.823-8.533,8.533c0,4.71,3.814,8.533,8.533,8.533h150.025l48.691,48.691
+      c1.664,1.664,3.849,2.5,6.033,2.5c2.185,0,4.369-0.836,6.033-2.5c3.337-3.337,3.337-8.73,0-12.066l-36.625-36.625h201.31
+      c4.719,0,8.533-3.823,8.533-8.533c0-4.71-3.814-8.533-8.533-8.533h-42.718v-17.075h42.667c4.719,0,8.533-3.823,8.533-8.533
+      c0-4.71-3.814-8.533-8.533-8.533h-42.667v-17.067h42.667c4.719,0,8.533-3.823,8.533-8.533s-3.814-8.533-8.533-8.533h-42.667
+      V85.342h42.667c4.719,0,8.533-3.823,8.533-8.533s-3.814-8.533-8.533-8.533h-42.667V51.209h42.667
+      c4.719,0,8.533-3.823,8.533-8.533c0-4.71-3.814-8.533-8.533-8.533h-42.667V17.075h42.667c4.719,0,8.533-3.823,8.533-8.533
+      s-3.814-8.533-8.533-8.533H179.217c-2.108,0-20.907,0.307-31.633,11.034l-128,128c-8.713,8.721-19.567,19.567-19.567,40.166
+      s10.854,31.445,19.567,40.166L70.784,270.575z" />
                         <path d="M494.95,411.179v-27.17c0-72.363-56.115-134.912-128.512-150.059c-2.432-16.444-16.503-29.141-33.621-29.141
-              s-31.189,12.698-33.621,29.141c-72.397,15.147-128.512,77.696-128.512,150.059c0,4.71,3.814,8.533,8.533,8.533
-              c4.719,0,8.533-3.823,8.533-8.533c0-64.794,53.845-122.377,120.218-134.195c0.068-0.009,0.128-0.009,0.196-0.009
-              c0.06-0.009,0.102-0.043,0.162-0.043c8.013-1.408,16.179-2.287,24.491-2.287c77.278,0,145.067,63.804,145.067,136.533v34.133
-              c0,4.71,3.814,8.533,8.533,8.533c4.71,0,8.533,3.831,8.533,8.533v51.2c0,4.702-3.823,8.533-8.533,8.533h-8.533v-42.667
-              c0-4.71-3.814-8.533-8.533-8.533c-4.719,0-8.533,3.823-8.533,8.533v42.667H443.75v-42.667c0-4.71-3.814-8.533-8.533-8.533
-              s-8.533,3.823-8.533,8.533v42.667h-17.067v-42.667c0-4.71-3.814-8.533-8.533-8.533s-8.533,3.823-8.533,8.533v42.667h-17.067
-              v-42.667c0-4.71-3.814-8.533-8.533-8.533s-8.533,3.823-8.533,8.533v42.667H341.35v-42.667c0-4.71-3.814-8.533-8.533-8.533
-              s-8.533,3.823-8.533,8.533v42.667h-17.067v-42.667c0-4.71-3.814-8.533-8.533-8.533c-4.719,0-8.533,3.823-8.533,8.533v42.667
-              h-17.067v-42.667c0-4.71-3.814-8.533-8.533-8.533s-8.533,3.823-8.533,8.533v42.667H238.95v-42.667
-              c0-4.71-3.814-8.533-8.533-8.533c-4.719,0-8.533,3.823-8.533,8.533v42.667h-17.067v-42.667c0-4.71-3.814-8.533-8.533-8.533
-              s-8.533,3.823-8.533,8.533v42.667h-8.533c-4.71,0-8.533-3.831-8.533-8.533v-51.2c0-4.702,3.823-8.533,8.533-8.533h273.067
-              c4.719,0,8.533-3.823,8.533-8.533s-3.814-8.533-8.533-8.533H179.217c-14.114,0-25.6,11.486-25.6,25.6v51.2
-              c0,14.114,11.486,25.6,25.6,25.6h307.2c14.114,0,25.6-11.486,25.6-25.6v-51.2C512.017,424.098,504.858,414.72,494.95,411.179z
-               M332.817,230.409c-5.086,0-10.12,0.29-15.095,0.751c2.833-5.487,8.499-9.284,15.095-9.284c6.545,0,12.177,3.746,15.019,9.276
-              C342.878,230.699,337.877,230.409,332.817,230.409z" />
+      s-31.189,12.698-33.621,29.141c-72.397,15.147-128.512,77.696-128.512,150.059c0,4.71,3.814,8.533,8.533,8.533
+      c4.719,0,8.533-3.823,8.533-8.533c0-64.794,53.845-122.377,120.218-134.195c0.068-0.009,0.128-0.009,0.196-0.009
+      c0.06-0.009,0.102-0.043,0.162-0.043c8.013-1.408,16.179-2.287,24.491-2.287c77.278,0,145.067,63.804,145.067,136.533v34.133
+      c0,4.71,3.814,8.533,8.533,8.533c4.71,0,8.533,3.831,8.533,8.533v51.2c0,4.702-3.823,8.533-8.533,8.533h-8.533v-42.667
+      c0-4.71-3.814-8.533-8.533-8.533c-4.719,0-8.533,3.823-8.533,8.533v42.667H443.75v-42.667c0-4.71-3.814-8.533-8.533-8.533
+      s-8.533,3.823-8.533,8.533v42.667h-17.067v-42.667c0-4.71-3.814-8.533-8.533-8.533s-8.533,3.823-8.533,8.533v42.667h-17.067
+      v-42.667c0-4.71-3.814-8.533-8.533-8.533s-8.533,3.823-8.533,8.533v42.667H341.35v-42.667c0-4.71-3.814-8.533-8.533-8.533
+      s-8.533,3.823-8.533,8.533v42.667h-17.067v-42.667c0-4.71-3.814-8.533-8.533-8.533c-4.719,0-8.533,3.823-8.533,8.533v42.667
+      h-17.067v-42.667c0-4.71-3.814-8.533-8.533-8.533s-8.533,3.823-8.533,8.533v42.667H238.95v-42.667
+      c0-4.71-3.814-8.533-8.533-8.533c-4.719,0-8.533,3.823-8.533,8.533v42.667h-17.067v-42.667c0-4.71-3.814-8.533-8.533-8.533
+      s-8.533,3.823-8.533,8.533v42.667h-8.533c-4.71,0-8.533-3.831-8.533-8.533v-51.2c0-4.702,3.823-8.533,8.533-8.533h273.067
+      c4.719,0,8.533-3.823,8.533-8.533s-3.814-8.533-8.533-8.533H179.217c-14.114,0-25.6,11.486-25.6,25.6v51.2
+      c0,14.114,11.486,25.6,25.6,25.6h307.2c14.114,0,25.6-11.486,25.6-25.6v-51.2C512.017,424.098,504.858,414.72,494.95,411.179z
+       M332.817,230.409c-5.086,0-10.12,0.29-15.095,0.751c2.833-5.487,8.499-9.284,15.095-9.284c6.545,0,12.177,3.746,15.019,9.276
+      C342.878,230.699,337.877,230.409,332.817,230.409z" />
                         <path d="M128.017,460.809H68.284v-153.6h93.867c4.719,0,8.533-3.823,8.533-8.533s-3.814-8.533-8.533-8.533H8.533
-              c-4.719,0-8.533,3.823-8.533,8.533s3.814,8.533,8.533,8.533h42.684v17.067H8.533c-4.719,0-8.533,3.823-8.533,8.533
-              c0,4.71,3.814,8.533,8.533,8.533h42.684v17.067H8.533c-4.719,0-8.533,3.823-8.533,8.533s3.814,8.533,8.533,8.533h42.684v17.067
-              H8.533c-4.719,0-8.533,3.823-8.533,8.533s3.814,8.533,8.533,8.533h42.684v17.067H8.533c-4.719,0-8.533,3.823-8.533,8.533
-              s3.814,8.533,8.533,8.533h42.684v17.067H8.533c-4.719,0-8.533,3.823-8.533,8.533s3.814,8.533,8.533,8.533h119.484
-              c4.719,0,8.533-3.823,8.533-8.533S132.736,460.809,128.017,460.809z" />
+      c-4.719,0-8.533,3.823-8.533,8.533s3.814,8.533,8.533,8.533h42.684v17.067H8.533c-4.719,0-8.533,3.823-8.533,8.533
+      c0,4.71,3.814,8.533,8.533,8.533h42.684v17.067H8.533c-4.719,0-8.533,3.823-8.533,8.533s3.814,8.533,8.533,8.533h42.684v17.067
+      H8.533c-4.719,0-8.533,3.823-8.533,8.533s3.814,8.533,8.533,8.533h42.684v17.067H8.533c-4.719,0-8.533,3.823-8.533,8.533
+      s3.814,8.533,8.533,8.533h42.684v17.067H8.533c-4.719,0-8.533,3.823-8.533,8.533s3.814,8.533,8.533,8.533h119.484
+      c4.719,0,8.533-3.823,8.533-8.533S132.736,460.809,128.017,460.809z" />
                     </svg>
-                    Vêtements
+                    <?=$translations['menu_cloth']??'Vêtements'?>
                 </a>
                 <ul class="sub">
                     <li class="sub-dropdown">
-                        <span>Homme <span>˅</span></span>
+                        <span><?=$translations['menu_men']??'Homme'?> <span>˅</span></span>
                         <ul class="sub-submenu">
-                            <li><a href="homme.php">Homme - Tout voir</a></li>
-                            <li><a href="vetement_homme.php">Vêtements</a></li>
-                            <li><a href="sous-vetement-homme.php">Sous-vêtements</a></li>
-                            <li><a href="lunette-homme.php">Lunettes</a></li>
-                            <li><a href="gants-homme.php">Gants</a></li>
-                            <li><a href="chaussure-homme.php">Chaussures</a></li>
+                            <li><a href="homme.php"><?=$translations['menu_men_all']??'Homme - Tout voir'?></a></li>
+                            <li><a href="vetement_homme.php"><?=$translations['menu_cloth']??'Vêtements'?></a></li>
+                            <li><a
+                                    href="sous-vetement-homme.php"><?=$translations['menu_underwear']??'Sous-vêtements'?></a>
+                            </li>
+                            <li><a href="lunette-homme.php"><?=$translations['menu_glasse']??'Lunettes'?></a></li>
+                            <li><a href="gants-homme.php"><?=$translations['menu_glove']??'Gants'?></a></li>
+                            <li><a href="chaussure-homme.php"><?=$translations['menu_shove']??'Chaussures'?></a></li>
                         </ul>
                     </li>
                     <li class="sub-dropdown">
-                        <span>Femme <span>˅</span></span>
+                        <span><?=$translations['menu_women']??'Femme'?> <span>˅</span></span>
                         <ul class="sub-submenu">
-                            <li><a href="femme.php">Femme - Tout voir</a></li>
-                            <li><a href="vetement_femme.php">Vêtements</a></li>
-                            <li><a href="sous-vetement-femme.php">Sous-vêtements</a></li>
-                            <li><a href="lunette-femme.php">Lunettes</a></li>
-                            <li><a href="gants-femme.php">Gants</a></li>
-                            <li><a href="chaussure-femme">Chaussures</a></li>
+                            <li><a href="femme.php"><?=$translations['menu_women_all']??'Femme - Tout voir'?></a></li>
+                            <li><a href="vetement_femme.php"><?=$translations['menu_cloth']??'Vêtements'?></a></li>
+                            <li><a
+                                    href="sous-vetement-femme.php"><?=$translations['menu_underwear']??'Sous-vêtements'?></a>
+                            </li>
+                            <li><a href="lunette-femme.php"><?=$translations['menu_glasse']??'Lunettes'?></a></li>
+                            <li><a href="gants-femme.php"><?=$translations['menu_glove']??'Gants'?></li>
+                            <li><a href="chaussure-femme"><?=$translations['menu_shove']??'Chaussures'?></a></li>
                         </ul>
                     </li>
                     <li class="sub-dropdown">
-                        <span>Enfant <span>˅</span></span>
+                        <span><?=$translations['menu_child']??'Enfant'?> <span>˅</span></span>
                         <ul class="sub-submenu">
-                            <li><a href="enfant.php">Enfant - Tout voir</a></li>
-                            <li><a href="vetement_enfant.php">Vêtements</a></li>
-                            <li><a href="sous-vetement-enfant.php">Sous-vêtements</a></li>
-                            <li><a href="lunette-enfant.php">Lunettes</a></li>
-                            <li><a href="gants-enfant.php">Gants</a></li>
-                            <li><a href="chaussure-enfant.php">Chaussures</a></li>
+                            <li><a href="enfant.php"><?=$translations['menu_child_all']??'Enfant - Tout voir'?></a></li>
+                            <li><a href="vetement_enfant.php"><?=$translations['menu_cloth']??'Vêtements'?></a></li>
+                            <li><a
+                                    href="sous-vetement-enfant.php"><?=$translations['menu_underwear']??'Sous-vêtements'?></a>
+                            </li>
+                            <li><a href="lunette-enfant.php"><?=$translations['menu_glasse']??'Lunettes'?></a></li>
+                            <li><a href="gants-enfant.php"><?=$translations['menu_glove']??'Gants'?></a></li>
+                            <li><a href="chaussure-enfant.php"><?=$translations['menu_shove']??'Chaussures'?></a></li>
                         </ul>
                     </li>
                 </ul>
@@ -160,15 +171,15 @@ if (!empty($_GET)) {
                             <path d="M8.60785 14.061L24.6138 20.065" stroke="currentColor" stroke-width="2"></path>
                         </g>
                     </svg>
-                    Accessoirs</a>
+                    <?=$translations['menu_accessory']??'Accessoirs'?></a>
                 <ul class="sub">
                     <li class="sub-dropdown">
-                        <span>Voir plus <span>˅</span></span>
+                        <span><?=$translations['all']??'Voir plus'?> <span>˅</span></span>
                         <ul class="sub-submenu">
-                            <li><a href="ski.php">Ski Alpin</a></li>
-                            <li><a href="snow.php">Snowboard</a></li>
-                            <li><a href="luge.php">Luge</a></li>
-                            <li><a href="raquette.php">Raquettes</a></li>
+                            <li><a href="ski.php"><?=$translations['ski']??'Ski Alpin'?></a></li>
+                            <li><a href="snow.php"><?=$translations['snowboard']??'Snowboard'?></a></li>
+                            <li><a href="luge.php"><?=$translations['sled']??'Luge'?></a></li>
+                            <li><a href="raquette.php"><?=$translations['snowshoe']??'Raquettes'?></a></li>
                         </ul>
                     </li>
                 </ul>
@@ -187,7 +198,7 @@ if (!empty($_GET)) {
                             d="M2.5625 9.66669H17.5625V16.3334C17.5625 16.7754 17.3869 17.1993 17.0743 17.5119C16.7618 17.8244 16.3379 18 15.8958 18H4.22917C3.78714 18 3.36322 17.8244 3.05066 17.5119C2.73809 17.1993 2.5625 16.7754 2.5625 16.3334V9.66669Z"
                             stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
-                    Tutoriels</a>
+                    <?=$translations['menu_tutorial']??'Tutoriels'?></a>
             </li>
             <li>
                 <a href="contact.html" aria-label="Menu Vêtements">
@@ -216,83 +227,84 @@ if (!empty($_GET)) {
                             stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
 
-                    Panier</a>
+                    <?=$translations['menu_shop']??'Panier'?></a>
             </li>
         </ul>
     </header>
     <div class="main-container">
         <div class="sidebar">
-            <h1>Filtrer les produits</h1>
+            <h1><?= $translations['filter_products'] ?? 'Filter Products'; ?></h1>
             <form method="GET" action="">
                 <details open>
-                    <summary><strong>Catégorie :</strong></summary>
+                    <summary><strong><?= $translations['category'] ?? 'Category:'; ?></strong></summary>
                     <label>
                         <input type="checkbox" name="category[]" value="ski"
                             <?php if (!empty($_GET['category']) && in_array('ski', $_GET['category'])) echo 'checked'; ?>>
-                        Ski
+                        <?= $translations['category_ski'] ?? 'Ski'; ?>
                     </label><br>
                     <label>
                         <input type="checkbox" name="category[]" value="snow"
                             <?php if (!empty($_GET['category']) && in_array('snow', $_GET['category'])) echo 'checked'; ?>>
-                        Snowboard
+                        <?= $translations['category_snow'] ?? 'Snowboard'; ?>
                     </label><br>
                     <label>
                         <input type="checkbox" name="category[]" value="luge"
                             <?php if (!empty($_GET['category']) && in_array('luge', $_GET['category'])) echo 'checked'; ?>>
-                        Luge
+                        <?= $translations['category_luge'] ?? 'Sled'; ?>
                     </label><br>
                     <label>
                         <input type="checkbox" name="category[]" value="raquette"
                             <?php if (!empty($_GET['category']) && in_array('raquette', $_GET['category'])) echo 'checked'; ?>>
-                        Raquettes
+                        <?= $translations['category_snowshoes'] ?? 'Snowshoes'; ?>
                     </label><br>
                 </details>
 
                 <details>
-                    <summary><strong>Marque :</strong></summary>
+                    <summary><strong><?= $translations['brand'] ?? 'Brand:'; ?></strong></summary>
                     <label>
                         <input type="checkbox" name="brand[]" value="Wedze"
                             <?php if (!empty($_GET['brand']) && in_array('Wedze', $_GET['brand'])) echo 'checked'; ?>>
-                        Wedze
+                        <?= $translations['brand_wedze'] ?? 'Wedze'; ?>
                     </label><br>
                     <label>
                         <input type="checkbox" name="brand[]" value="Kipsta"
                             <?php if (!empty($_GET['brand']) && in_array('Kipsta', $_GET['brand'])) echo 'checked'; ?>>
-                        Kipsta
+                        <?= $translations['brand_kipsta'] ?? 'Kipsta'; ?>
                     </label><br>
                     <label>
                         <input type="checkbox" name="brand[]" value="Quecha"
                             <?php if (!empty($_GET['brand']) && in_array('Quecha', $_GET['brand'])) echo 'checked'; ?>>
-                        Quecha
+                        <?= $translations['brand_quecha'] ?? 'Quecha'; ?>
                     </label><br>
                 </details>
 
                 <details>
-                    <summary><strong>Couleur :</strong></summary>
+                    <summary><strong><?= $translations['color'] ?? 'Color:'; ?></strong></summary>
                     <label>
-                        <input type="checkbox" name="color[]" value="#FF0000"> Rouge
+                        <input type="checkbox" name="color[]" value="#FF0000">
+                        <?= $translations['color_red'] ?? 'Red'; ?>
                     </label>
                     <label>
-                        <input type="checkbox" name="color[]" value="#000000"> Noir
+                        <input type="checkbox" name="color[]" value="#000000">
+                        <?= $translations['color_black'] ?? 'Black'; ?>
                     </label>
                     <label>
-                        <input type="checkbox" name="color[]" value="#0000FF"> Bleu
+                        <input type="checkbox" name="color[]" value="#0000FF">
+                        <?= $translations['color_blue'] ?? 'Blue'; ?>
                     </label><br>
                 </details>
 
-
-                <label for="price">Prix maximum :</label>
+                <label for="price"><?= $translations['max_price'] ?? 'Maximum Price'; ?> :</label>
                 <input type="number" name="max_price" id="price" placeholder="Ex: 100"
                     style="width: 100%; margin-top: 5px;"
                     value="<?php if (!empty($_GET['max_price'])) echo htmlspecialchars($_GET['max_price']); ?>"><br><br>
 
-                <button type="submit">Appliquer les filtres</button>
+                <button type="submit"><?= $translations['apply_filters'] ?? 'Apply Filters'; ?></button>
             </form>
-
         </div>
         <div class="container">
             <?php if (empty($filteredArticles)): ?>
-            <p>Aucun produit ne correspond à vos critères.</p>
+            <p><?= $translations['no_products_found'] ?? 'No products match your criteria.'; ?></p>
             <?php else: ?>
             <?php foreach ($filteredArticles as $article): ?>
             <div class="card">
@@ -316,7 +328,7 @@ if (!empty($_GET)) {
                         <label for="slide2-<?= $article['id'] ?>" class="next">&#10095;</label>
                         <?php endif; ?>
                     </div>
-                    <h1><?=htmlspecialchars($article['brand'])?></h1>
+                    <h1><?= htmlspecialchars($article['brand']) ?></h1>
                     <h2><?= htmlspecialchars($article['name']) ?></h2>
                     <div class="price">
                         <?= $article['price'] ?>€
@@ -328,32 +340,12 @@ if (!empty($_GET)) {
                 <form method="POST" action="panier.php">
                     <input type="hidden" name="product_name" value="<?= htmlspecialchars($article['name']) ?>">
                     <input type="hidden" name="product_price" value="<?= htmlspecialchars($article['price']) ?>">
-
-                    <label for="size-<?= $article['id'] ?>">Taille :</label>
-                    <select name="product_size" id="size-<?= $article['id'] ?>" required>
-                        <option value="" disabled selected>Sélectionnez une taille</option>
-                        <?php foreach ($article['sizes'] as $size): ?>
-                        <option value="<?= htmlspecialchars($size) ?>"><?= htmlspecialchars($size) ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                    <br>
-                    <div class="color-swatches">
-                        <?php foreach ($article['colors'] as $color): ?>
-                        <div class="color-swatch">
-                            <input type="radio" id="color-<?= htmlspecialchars($color) ?>-<?= $article['id'] ?>"
-                                name="product_color" value="<?= htmlspecialchars($color) ?>" required
-                                style="display: none;">
-                            <label for="color-<?= htmlspecialchars($color) ?>-<?= $article['id'] ?>"
-                                style="width: 30px; height: 30px; border-radius: 50%; background-color: <?= htmlspecialchars($color) ?>; cursor: pointer; border: 2px solid #ccc; display: inline-block;">
-                            </label>
-                        </div>
-                        <?php endforeach; ?>
-                    </div>
-
-                    <label class="quantity" for="quantity-<?= $article['id'] ?>">Quantité :</label>
+                    <label class="quantity"
+                        for="quantity-<?= $article['id'] ?>"><?= $translations['quantity'] ?? 'Quantity:'; ?></label>
                     <input type="number" name="quantity" id="quantity-<?= $article['id'] ?>" value="1" min="1" required>
                     <br>
-                    <button type="submit" name="add_to_cart">Ajouter au panier</button>
+                    <button type="submit"
+                        name="add_to_cart"><?= $translations['add_to_cart'] ?? 'Add to Cart'; ?></button>
                 </form>
             </div>
             <?php endforeach; ?>
@@ -363,81 +355,99 @@ if (!empty($_GET)) {
     <footer>
         <div class="footer-settings">
             <div class="language-selector">
-                <label for="language">Langue :</label>
-                <select id="language" name="language">
-                    <option value="fr">Français</option>
-                    <option value="en">English</option>
-                </select>
+                <label for="language"><?= $translations['footer_language'] ?? 'Langue' ?></label>
+                <form method="POST">
+                    <select id="language" name="language" onchange="this.form.submit()">
+                        <option value="fr" <?= $language == 'fr' ? 'selected' : '' ?>>
+                            <?= $translations['language_french'] ?? 'Français' ?></option>
+                        <option value="en" <?= $language == 'en' ? 'selected' : '' ?>>
+                            <?= $translations['language_english'] ?? 'English' ?></option>
+                    </select>
+                </form>
             </div>
             <div class="vision-mode-toggle">
-                <label for="vision-mode">Mode malvoyant :</label>
-                <button id="vision-mode">Activer</button>
+                <label for="vision-mode"><?= $translations['vision_mode_label'] ?? 'Mode malvoyant :' ?></label>
+                <!-- Lien pour activer/désactiver le mode malvoyant -->
+                <a href="?vision_mode=true" class="vision-mode-toggle-link">
+                    <?= $translations['vision_mode_activate'] ?? 'Activer' ?>
+                </a>
+                <a href="?vision_mode=false" class="vision-mode-toggle-link">
+                    <?= $translations['vision_mode_deactivate'] ?? 'Désactiver' ?>
+                </a>
             </div>
         </div>
         <div class="footer-container">
             <div class="footer-section">
                 <input type="checkbox" id="discover" class="toggle" />
-                <label for="discover">Notre entreprise <span>˅</span></label>
+                <label for="discover"><?= $translations['our_company'] ?? 'Notre entreprise' ?> <span>˅</span></label>
                 <ul class="content">
-                    <h2 class="section-title">Notre entreprise</h2>
-                    <li><a href="temporaire.html">Qui sommes-nous ?</a></li>
-                    <li><a href="temporaire.html">La vie de nos produits</a></li>
-                    <li><a href="temporaire.html">Engagement durable</a></li>
+                    <h2 class="section-title"><?= $translations['our_company'] ?? 'Notre entreprise' ?></h2>
+                    <li><a href="temporaire.html"><?= $translations['who_we_are'] ?? 'Qui sommes-nous ?' ?></a></li>
+                    <li><a href="temporaire.html"><?= $translations['product_life'] ?? 'La vie de nos produits' ?></a>
+                    </li>
+                    <li><a
+                            href="temporaire.html"><?= $translations['sustainable_commitment'] ?? 'Engagement durable' ?></a>
+                    </li>
                 </ul>
             </div>
             <div class="footer-section">
                 <input type="checkbox" id="help" class="toggle" />
-                <label for="help">Besoin d'aide <span>˅</span></label>
+                <label for="help"><?= $translations['need_help'] ?? 'Besoin d\'aide' ?> <span>˅</span></label>
                 <ul class="content">
-                    <h2 class="section-title">Besoin d'aide</h2>
-                    <li><a href="temporaire.html">Mode de livraison</a></li>
-                    <li><a href="temporaire.html">Moyens de paiement</a></li>
-                    <li><a href="temporaire.html">Comment choisir votre produit</a></li>
+                    <h2 class="section-title"><?= $translations['need_help'] ?? 'Besoin d\'aide' ?></h2>
+                    <li><a href="temporaire.html"><?= $translations['delivery_mode'] ?? 'Mode de livraison' ?></a></li>
+                    <li><a href="temporaire.html"><?= $translations['payment_methods'] ?? 'Moyens de paiement' ?></a>
+                    </li>
+                    <li><a
+                            href="temporaire.html"><?= $translations['product_selection'] ?? 'Comment choisir votre produit' ?></a>
+                    </li>
                 </ul>
             </div>
             <div class="footer-section">
                 <input type="checkbox" id="sport" class="toggle" />
-                <label for="sport">Faire du sport <span>˅</span></label>
+                <label for="sport"><?= $translations['sport'] ?? 'Faire du sport' ?> <span>˅</span></label>
                 <ul class="content">
-                    <h2 class="section-title">Faire du sport</h2>
-                    <li><a href="tutoriel.html">Tutoriels</a></li>
+                    <h2 class="section-title"><?= $translations['sport'] ?? 'Faire du sport' ?></h2>
+                    <li><a href="tutoriel.html"><?= $translations['menu_tutorial'] ?? 'Tutoriels' ?></a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <input type="checkbox" id="follow" class="toggle" />
-                <label for="follow">Suivez-nous <span>˅</span></label>
+                <label for="follow"><?= $translations['follow_us'] ?? 'Suivez-nous' ?> <span>˅</span></label>
                 <div class="content social-media">
                     <a href="temporaire.html" class="social-icon facebook">
                         <svg width="21" height="21" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M12 2.03998C6.5 2.03998 2 6.52998 2 12.06C2 17.06 5.66 21.21 10.44 21.96V14.96H7.9V12.06H10.44V9.84998C10.44 7.33998 11.93 5.95998 14.22 5.95998C15.31 5.95998 16.45 6.14998 16.45 6.14998V8.61998H15.19C13.95 8.61998 13.56 9.38998 13.56 10.18V12.06H16.34L15.89 14.96H13.56V21.96C15.9164 21.5878 18.0622 20.3855 19.6099 18.57C21.1576 16.7546 22.0054 14.4456 22 12.06C22 6.52998 17.5 2.03998 12 2.03998Z"
-                                fill="currentColor" />
+                            <path d="..." fill="currentColor" />
                         </svg>
-                        Facebook
+                        <?= $translations['facebook'] ?? 'Facebook' ?>
                     </a>
                     <a href="temporaire.html" class="social-icon instagram">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" width="21" height="21">
-                            <path
-                                d="M7.75 2H16.25C19.35 2 22 4.65 22 7.75V16.25C22 19.35 19.35 22 16.25 22H7.75C4.65 22 2 19.35 2 16.25V7.75C2 4.65 4.65 2 7.75 2ZM7.75 4C5.68 4 4 5.68 4 7.75V16.25C4 18.32 5.68 20 7.75 20H16.25C18.32 20 20 18.32 20 16.25V7.75C20 5.68 18.32 4 16.25 4H7.75ZM12 7C14.76 7 17 9.24 17 12C17 14.76 14.76 17 12 17C9.24 17 7 14.76 7 12C7 9.24 9.24 7 12 7ZM12 9C10.34 9 9 10.34 9 12C9 13.66 10.34 15 12 15C13.66 15 15 13.66 15 12C15 10.34 13.66 9 12 9ZM17.5 6C18.33 6 19 6.67 19 7.5C19 8.33 18.33 9 17.5 9C16.67 9 16 8.33 16 7.5C16 6.67 16.67 6 17.5 6Z"
-                                fill="currentColor" />
+                            <path d="..." fill="currentColor" />
                         </svg>
-                        Instagram
+                        <?= $translations['instagram'] ?? 'Instagram' ?>
                     </a>
                 </div>
             </div>
         </div>
         <div class="footer-bottom-container">
             <div class="footer-bottom">
-                <h3>&copy; 2024 Kaizen - Tous droits réservés.</h3>
+                <h3>&copy; 2024 Kaizen - <?= $translations['all_rights_reserved'] ?? 'Tous droits réservés.' ?></h3>
             </div>
             <div class="footer-bottom-link">
                 <ul>
-                    <li><a href="temporaire.html">Transparence des produit</a></li>
-                    <li><a href="temporaire.html">Condition Générales</a></li>
-                    <li><a href="temporaire.html">Mention légales</a></li>
-                    <li><a href="temporaire.html">Données personnelles</a></li>
-                    <li><a href="temporaire.html">Gestion des cookies</a></li>
-                    <li><a href="contact.html">Contact</a></li>
+                    <li><a
+                            href="temporaire.html"><?= $translations['product_transparency'] ?? 'Transparence des produits' ?></a>
+                    </li>
+                    <li><a href="temporaire.html"><?= $translations['terms_conditions'] ?? 'Conditions Générales' ?></a>
+                    </li>
+                    <li><a href="temporaire.html"><?= $translations['legal_mentions'] ?? 'Mentions légales' ?></a></li>
+                    <li><a href="temporaire.html"><?= $translations['personal_data'] ?? 'Données personnelles' ?></a>
+                    </li>
+                    <li><a
+                            href="temporaire.html"><?= $translations['cookies_management'] ?? 'Gestion des cookies' ?></a>
+                    </li>
+                    <li><a href="contact.html"><?= $translations['contact'] ?? 'Contact' ?></a></li>
                 </ul>
             </div>
         </div>
