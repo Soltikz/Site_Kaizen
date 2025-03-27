@@ -362,7 +362,6 @@ if (isset($_POST['language']) && in_array($_POST['language'], ['fr', 'en'])) {
                     <br>
 
                     <div class="color-swatches">
-                        <p><?= $translations['color_label'] ?? 'Choose a color:'; ?></p>
                         <?php foreach ($article['colors'] as $color): ?>
                         <div class="color-swatch">
                             <input type="radio" id="color-<?= htmlspecialchars($color) ?>-<?= $article['id'] ?>"
